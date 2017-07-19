@@ -1,10 +1,10 @@
-package cl.zeke.framework.pdf.core.xhtml.velocity;
+package com.github.erodriguezg.pdfutils.core.xhtml.velocity;
 
 /**
  * Created by takeda on 04-01-16.
  */
 
-import cl.zeke.framework.pdf.core.api.XhtmlGenerator;
+import com.github.erodriguezg.pdfutils.core.api.XhtmlGenerator;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.slf4j.Logger;

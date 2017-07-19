@@ -1,4 +1,4 @@
-package cl.zeke.framework.pdf.core.api;
+package com.github.erodriguezg.pdfutils.core.api;
 
 /**
  * Created by takeda on 04-01-16.

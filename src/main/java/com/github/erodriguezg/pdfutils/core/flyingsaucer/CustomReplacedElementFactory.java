@@ -1,8 +1,8 @@
-package cl.zeke.framework.pdf.core.flyingsaucer;
+package com.github.erodriguezg.pdfutils.core.flyingsaucer;
 
-import cl.zeke.framework.pdf.core.api.resource.FileResource;
-import cl.zeke.framework.pdf.core.api.resource.Resource;
-import cl.zeke.framework.pdf.core.api.resource.ResourceType;
+import com.github.erodriguezg.pdfutils.core.api.resource.FileResource;
+import com.github.erodriguezg.pdfutils.core.api.resource.Resource;
+import com.github.erodriguezg.pdfutils.core.api.resource.ResourceType;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Image;
 import org.apache.commons.io.IOUtils;
@@ -84,7 +84,7 @@ public class CustomReplacedElementFactory implements ReplacedElementFactory {
                 return new ITextImageElement(fsImage);
             }
         } catch (IOException | BadElementException ex) {
-            LOG.error("error al escribir imagen en pdf. ", ex);
+            LOG.error("error al escribir imagen en pdfutils. ", ex);
             throw new IllegalStateException(ex);
         }
 

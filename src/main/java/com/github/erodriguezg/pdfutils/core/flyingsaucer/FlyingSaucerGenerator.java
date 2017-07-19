@@ -1,14 +1,14 @@
-package cl.zeke.framework.pdf.core.flyingsaucer;
+package com.github.erodriguezg.pdfutils.core.flyingsaucer;
 
 /**
  * Created by takeda on 04-01-16.
  */
 
-import cl.zeke.framework.pdf.core.PdfGeneratorAdapter;
-import cl.zeke.framework.pdf.core.api.PdfOptions;
-import cl.zeke.framework.pdf.core.api.resource.FileResource;
-import cl.zeke.framework.pdf.core.api.resource.Resource;
-import cl.zeke.framework.pdf.core.api.resource.ResourceType;
+import com.github.erodriguezg.pdfutils.core.PdfGeneratorAdapter;
+import com.github.erodriguezg.pdfutils.core.api.PdfOptions;
+import com.github.erodriguezg.pdfutils.core.api.resource.FileResource;
+import com.github.erodriguezg.pdfutils.core.api.resource.Resource;
+import com.github.erodriguezg.pdfutils.core.api.resource.ResourceType;
 import com.lowagie.text.DocumentException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;

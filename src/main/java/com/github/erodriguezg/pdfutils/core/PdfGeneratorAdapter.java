@@ -1,9 +1,9 @@
-package cl.zeke.framework.pdf.core;
+package com.github.erodriguezg.pdfutils.core;
 
-import cl.zeke.framework.pdf.core.api.PdfGenerator;
-import cl.zeke.framework.pdf.core.api.PdfOptions;
-import cl.zeke.framework.pdf.core.api.XhtmlGenerator;
-import cl.zeke.framework.pdf.core.api.resource.Resource;
+import com.github.erodriguezg.pdfutils.core.api.PdfGenerator;
+import com.github.erodriguezg.pdfutils.core.api.PdfOptions;
+import com.github.erodriguezg.pdfutils.core.api.XhtmlGenerator;
+import com.github.erodriguezg.pdfutils.core.api.resource.Resource;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;

@@ -1,11 +1,11 @@
-package cl.zeke.framework.pdf.core.flyingsaucer;
+package com.github.erodriguezg.pdfutils.core.flyingsaucer;
 
-import cl.zeke.framework.pdf.core.api.PdfGenerator;
-import cl.zeke.framework.pdf.core.api.XhtmlGenerator;
-import cl.zeke.framework.pdf.core.api.resource.FileResource;
-import cl.zeke.framework.pdf.core.api.resource.Resource;
-import cl.zeke.framework.pdf.core.api.resource.ResourceType;
-import cl.zeke.framework.pdf.core.xhtml.velocity.VelocityXhtmlGenerator;
+import com.github.erodriguezg.pdfutils.core.api.PdfGenerator;
+import com.github.erodriguezg.pdfutils.core.api.XhtmlGenerator;
+import com.github.erodriguezg.pdfutils.core.api.resource.FileResource;
+import com.github.erodriguezg.pdfutils.core.api.resource.Resource;
+import com.github.erodriguezg.pdfutils.core.api.resource.ResourceType;
+import com.github.erodriguezg.pdfutils.core.xhtml.velocity.VelocityXhtmlGenerator;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -101,8 +101,8 @@ public class FlyingSaucerGeneratorIT {
 
     private void escribirDebugPdf(byte[] bytePdf) {
         try{
-            File fileTemp = File.createTempFile(UUID.randomUUID().toString(), ".pdf");
-            LOG.info("file pdf creado: {}", fileTemp);
+            File fileTemp = File.createTempFile(UUID.randomUUID().toString(), ".pdfutils");
+            LOG.info("file pdfutils creado: {}", fileTemp);
             try(InputStream inputStream = new ByteArrayInputStream(bytePdf); OutputStream outputStream = new FileOutputStream(fileTemp)) {
                 IOUtils.copy(inputStream, outputStream);
             }

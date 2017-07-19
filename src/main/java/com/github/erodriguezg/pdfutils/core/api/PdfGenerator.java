@@ -1,10 +1,10 @@
-package cl.zeke.framework.pdf.core.api;
+package com.github.erodriguezg.pdfutils.core.api;
 
 /**
  * Created by takeda on 04-01-16.
  */
 
-import cl.zeke.framework.pdf.core.api.resource.Resource;
+import com.github.erodriguezg.pdfutils.core.api.resource.Resource;
 
 import java.net.URL;
 
