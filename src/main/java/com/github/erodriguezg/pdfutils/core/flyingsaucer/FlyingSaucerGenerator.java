@@ -58,7 +58,7 @@ public class FlyingSaucerGenerator extends PdfGeneratorAdapter {
         ENTITY_REFS.put("&oacute;", "&#243;");
         ENTITY_REFS.put("&Uacute;", "&#218;");
         ENTITY_REFS.put("&uacute;", "&#250;");
-        ENTITY_REFS.put("&uuml;", "&#252");
+        ENTITY_REFS.put("&uuml;", "&#252;");
         ENTITY_REFS.put("&Uuml;", "&#220;");
         ENTITY_REFS.put("&Ntilde;", "&#209;");
         ENTITY_REFS.put("&ntilde;", "&#241;");
