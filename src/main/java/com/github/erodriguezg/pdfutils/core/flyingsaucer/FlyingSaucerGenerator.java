@@ -39,6 +39,32 @@ public class FlyingSaucerGenerator extends PdfGeneratorAdapter {
     private static final String HTML_BODY_ELEMENT_NAME = "body";
     private static final String HTML_IMG_ELEMENT_NAME = "img";
 
+    private static final Map<String, String> ENTITY_REFS = new HashMap<>();
+    static {
+        ENTITY_REFS.put("&nbsp;", "&#160;");
+        ENTITY_REFS.put("&quot;", "&#34;");
+        ENTITY_REFS.put("&amp;", "&#38;");
+        ENTITY_REFS.put("&lt;", "&#60;");
+        ENTITY_REFS.put("&gt;", "&#62;");
+        ENTITY_REFS.put("&laquo;", "&#171;");
+        ENTITY_REFS.put("&raquo;", "&#187;");
+        ENTITY_REFS.put("&Aacute;", "&#193;");
+        ENTITY_REFS.put("&aacute;", "&#225;");
+        ENTITY_REFS.put("&Eacute;", "&#201;");
+        ENTITY_REFS.put("&eacute;", "&#233;");
+        ENTITY_REFS.put("&Iacute;", "&#205;");
+        ENTITY_REFS.put("&iacute;", "&#237;");
+        ENTITY_REFS.put("&Oacute;", "&#211;");
+        ENTITY_REFS.put("&oacute;", "&#243;");
+        ENTITY_REFS.put("&Uacute;", "&#218;");
+        ENTITY_REFS.put("&uacute;", "&#250;");
+        ENTITY_REFS.put("&uuml;", "&#252");
+        ENTITY_REFS.put("&Uuml;", "&#220;");
+        ENTITY_REFS.put("&Ntilde;", "&#209;");
+        ENTITY_REFS.put("&ntilde;", "&#241;");
+    }
+
+
     @Override
     public byte[] generar(byte[] xhtmlByte, Resource[] resources, PdfOptions options) {
         File xhtmlFileTemp = null;
@@ -181,27 +207,7 @@ public class FlyingSaucerGenerator extends PdfGeneratorAdapter {
 
     private byte[] translateEntityReferences(byte[] xmlBytes) throws UnsupportedEncodingException {
         String newXml = new String(xmlBytes, "utf-8");
-        Map<String, String> entityRefs = new HashMap<>();
-        entityRefs.put("&nbsp;", "&#160;");
-        entityRefs.put("&quot;", "&#34;");
-        entityRefs.put("&amp;", "&#38;");
-        entityRefs.put("&lt;", "&#60;");
-        entityRefs.put("&gt;", "&#62;");
-        entityRefs.put("&laquo;", "&#171;");
-        entityRefs.put("&raquo;", "&#187;");
-        entityRefs.put("&Aacute;", "&#193;");
-        entityRefs.put("&Eacute;", "&#201;");
-        entityRefs.put("&Iacute;", "&#205;");
-        entityRefs.put("&Oacute;", "&#211;");
-        entityRefs.put("&Uacute;", "&#218;");
-        entityRefs.put("&Ntilde;", "&#209;");
-        entityRefs.put("&aacute;", "&#225;");
-        entityRefs.put("&eacute;", "&#233;");
-        entityRefs.put("&iacute;", "&#237;");
-        entityRefs.put("&oacute;", "&#243;");
-        entityRefs.put("&uacute;", "&#250;");
-        entityRefs.put("&nacute;", "&#241;");
-        for (Map.Entry<String, String> er : entityRefs.entrySet()) {
+        for (Map.Entry<String, String> er : ENTITY_REFS.entrySet()) {
             newXml = newXml.replace(er.getKey(), er.getValue());
         }
         return newXml.getBytes();

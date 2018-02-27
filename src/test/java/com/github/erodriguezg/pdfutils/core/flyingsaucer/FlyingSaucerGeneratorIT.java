@@ -33,7 +33,7 @@ public class FlyingSaucerGeneratorIT {
 
     @Test
     public void holaMundoTest() {
-        XhtmlGenerator xhtmlGenerator = new VelocityXhtmlGenerator("<body><h1>hola mundo</h1></body>", Collections.<String, Object>emptyMap());
+        XhtmlGenerator xhtmlGenerator = new VelocityXhtmlGenerator("<body><h1>hola mundo áéíóúñüÁÉÍÓÚÑ</h1></body>", Collections.<String, Object>emptyMap());
         byte[] bytePdf = pdfGenerator.generar(xhtmlGenerator, null);
         escribirDebugPdf(bytePdf);
         Assert.assertNotNull(bytePdf);
