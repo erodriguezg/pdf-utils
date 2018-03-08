@@ -7,8 +7,6 @@ package com.github.erodriguezg.pdfutils.core.xhtml.velocity;
 import com.github.erodriguezg.pdfutils.core.api.XhtmlGenerator;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Reader;
 import java.io.StringWriter;
@@ -18,8 +16,6 @@ import java.util.Map;
 
 public class VelocityXhtmlGenerator implements XhtmlGenerator {
 
-    private static Logger log = LoggerFactory.getLogger(VelocityXhtmlGenerator.class);
-
     static {
         /* first, we init the runtime engine.  Defaults are fine. */
         Velocity.clearProperty("runtime.log.logsystem.class");
@@ -27,8 +23,7 @@ public class VelocityXhtmlGenerator implements XhtmlGenerator {
         Velocity.init();
     }
 
-    private static SimpleDateFormat SDF = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss");
-
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss");
     private String template;
     private Map<String, Object> scope;
     private Reader reader;
@@ -45,7 +40,8 @@ public class VelocityXhtmlGenerator implements XhtmlGenerator {
 
     @Override
     public byte[] generar() {
-        String marca = "xhtml_" + SDF.format(new Date());
+
+        String marca = "xhtml_" + sdf.format(new Date());
         StringWriter sw = new StringWriter();
         VelocityContext context = crearVelocityContext();
 
@@ -66,8 +62,8 @@ public class VelocityXhtmlGenerator implements XhtmlGenerator {
         if (scope == null) {
             return context;
         }
-        for (String key : scope.keySet()) {
-            context.put(key, scope.get(key));
+        for (Map.Entry<String,Object> entry : scope.entrySet()) {
+            context.put(entry.getKey(), entry.getValue());
         }
         return context;
     }

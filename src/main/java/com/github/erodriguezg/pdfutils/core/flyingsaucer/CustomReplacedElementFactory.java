@@ -49,7 +49,7 @@ public class CustomReplacedElementFactory implements ReplacedElementFactory {
         }
         return Arrays.asList(resources).stream()
                 .filter(r -> r.getResourceType() == ResourceType.IMG)
-                .collect(Collectors.toMap(r -> r.getName(), r -> (FileResource) r));
+                .collect(Collectors.toMap(Resource::getName, r -> (FileResource) r));
     }
 
     @Override
@@ -62,12 +62,9 @@ public class CustomReplacedElementFactory implements ReplacedElementFactory {
 
         String nodeName = element.getNodeName();
         String srcName = element.getAttribute("src");
-        String widthText = element.getAttribute("width");
-        String heightText = element.getAttribute("height");
 
         if (!"img".equalsIgnoreCase(nodeName)
-                && (srcName == null || srcName.trim().isEmpty())
-                && !imgFiles.containsKey(srcName.trim())) {
+                && (srcName == null || srcName.trim().isEmpty() || !imgFiles.containsKey(srcName.trim()))) {
             return superFactory.createReplacedElement(layoutContext, blockBox, userAgentCallback, cssWidth, cssHeight);
         }
 
@@ -76,19 +73,14 @@ public class CustomReplacedElementFactory implements ReplacedElementFactory {
             byte[] bytes = IOUtils.toByteArray(inputStream);
             Image image = Image.getInstance(bytes);
             FSImage fsImage = new ITextFSImage(image);
-
-            if (fsImage != null) {
-                if ((cssWidth != -1) || (cssHeight != -1)) {
-                    fsImage.scale(cssWidth, cssHeight);
-                }
-                return new ITextImageElement(fsImage);
+            if ((cssWidth != -1) || (cssHeight != -1)) {
+                fsImage.scale(cssWidth, cssHeight);
             }
+            return new ITextImageElement(fsImage);
         } catch (IOException | BadElementException ex) {
             LOG.error("error al escribir imagen en pdfutils. ", ex);
             throw new IllegalStateException(ex);
         }
-
-        return superFactory.createReplacedElement(layoutContext, blockBox, userAgentCallback, cssWidth, cssHeight);
     }
 
     @Override

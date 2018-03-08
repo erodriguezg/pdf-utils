@@ -9,6 +9,7 @@ import com.github.erodriguezg.pdfutils.core.api.PdfOptions;
 import com.github.erodriguezg.pdfutils.core.api.resource.FileResource;
 import com.github.erodriguezg.pdfutils.core.api.resource.Resource;
 import com.github.erodriguezg.pdfutils.core.api.resource.ResourceType;
+import com.github.erodriguezg.pdfutils.core.utils.HtmlEntitiesUtils;
 import com.lowagie.text.DocumentException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -27,43 +28,23 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
-import java.util.*;
+import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class FlyingSaucerGenerator extends PdfGeneratorAdapter {
 
     private static final Logger LOG = LoggerFactory.getLogger(FlyingSaucerGenerator.class);
 
+    private static final String UTF8 = "utf-8";
+
     private static final String HTML_ELEMENT_NAME = "html";
     private static final String HTML_HEADER_ELEMENT_NAME = "head";
     private static final String HTML_BODY_ELEMENT_NAME = "body";
     private static final String HTML_IMG_ELEMENT_NAME = "img";
-
-    private static final Map<String, String> ENTITY_REFS = new HashMap<>();
-    static {
-        ENTITY_REFS.put("&nbsp;", "&#160;");
-        ENTITY_REFS.put("&quot;", "&#34;");
-        ENTITY_REFS.put("&amp;", "&#38;");
-        ENTITY_REFS.put("&lt;", "&#60;");
-        ENTITY_REFS.put("&gt;", "&#62;");
-        ENTITY_REFS.put("&laquo;", "&#171;");
-        ENTITY_REFS.put("&raquo;", "&#187;");
-        ENTITY_REFS.put("&Aacute;", "&#193;");
-        ENTITY_REFS.put("&aacute;", "&#225;");
-        ENTITY_REFS.put("&Eacute;", "&#201;");
-        ENTITY_REFS.put("&eacute;", "&#233;");
-        ENTITY_REFS.put("&Iacute;", "&#205;");
-        ENTITY_REFS.put("&iacute;", "&#237;");
-        ENTITY_REFS.put("&Oacute;", "&#211;");
-        ENTITY_REFS.put("&oacute;", "&#243;");
-        ENTITY_REFS.put("&Uacute;", "&#218;");
-        ENTITY_REFS.put("&uacute;", "&#250;");
-        ENTITY_REFS.put("&uuml;", "&#252;");
-        ENTITY_REFS.put("&Uuml;", "&#220;");
-        ENTITY_REFS.put("&Ntilde;", "&#209;");
-        ENTITY_REFS.put("&ntilde;", "&#241;");
-    }
-
 
     @Override
     public byte[] generar(byte[] xhtmlByte, Resource[] resources, PdfOptions options) {
@@ -85,7 +66,11 @@ public class FlyingSaucerGenerator extends PdfGeneratorAdapter {
         } catch (DocumentException | IOException e) {
             throw new IllegalStateException(e);
         } finally {
-            if (xhtmlFileTemp != null && !xhtmlFileTemp.delete()) {
+            try {
+                if(xhtmlFileTemp != null) {
+                    Files.delete(xhtmlFileTemp.toPath());
+                }
+            } catch (IOException e) {
                 LOG.warn("no se elimino archivo '{}'", xhtmlFileTemp);
             }
         }
@@ -94,7 +79,7 @@ public class FlyingSaucerGenerator extends PdfGeneratorAdapter {
     private void addFonts(ITextRenderer renderer, Map<String, FileResource> fontsMaps) throws IOException, DocumentException {
         for (Map.Entry<String, FileResource> entry : fontsMaps.entrySet()) {
             renderer.getFontResolver().addFont(entry.getValue().getFile().getAbsolutePath(), entry.getKey(),
-                    "utf-8", true, null);
+                    UTF8, true, null);
         }
     }
 
@@ -177,7 +162,7 @@ public class FlyingSaucerGenerator extends PdfGeneratorAdapter {
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         transformer.setOutputProperty(OutputKeys.METHOD, "xml");
         transformer.setOutputProperty(OutputKeys.VERSION, "1.0");
-        transformer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
+        transformer.setOutputProperty(OutputKeys.ENCODING, UTF8);
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
         transformer.setOutputProperty(OutputKeys.MEDIA_TYPE, "application/xhtml+xml");
@@ -196,7 +181,7 @@ public class FlyingSaucerGenerator extends PdfGeneratorAdapter {
         }
         return Arrays.asList(resources).stream()
                 .filter(r -> r.getResourceType() == resourceType)
-                .collect(Collectors.toMap(r -> r.getName(), r -> (FileResource) r));
+                .collect(Collectors.toMap(Resource::getName, r -> (FileResource) r));
     }
 
     private String normalizarDirectorio(File file) {
@@ -206,8 +191,8 @@ public class FlyingSaucerGenerator extends PdfGeneratorAdapter {
     }
 
     private byte[] translateEntityReferences(byte[] xmlBytes) throws UnsupportedEncodingException {
-        String newXml = new String(xmlBytes, "utf-8");
-        for (Map.Entry<String, String> er : ENTITY_REFS.entrySet()) {
+        String newXml = new String(xmlBytes, UTF8);
+        for (Map.Entry<String, String> er : HtmlEntitiesUtils.getEntityRefs().entrySet()) {
             newXml = newXml.replace(er.getKey(), er.getValue());
         }
         return newXml.getBytes();

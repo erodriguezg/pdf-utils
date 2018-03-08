@@ -48,10 +48,7 @@ public abstract class Resource {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (this.resourceType != other.resourceType) {
-            return false;
-        }
-        return true;
+        return this.resourceType == other.resourceType;
     }
 
 }
